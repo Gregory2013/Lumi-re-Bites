@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lumière Bites</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <link rel="icon" type="image/png" href="./photo/Biru Krem Modern Kedai Dimsum Logo (1).png">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary " id="header">
+
+    </nav>
+
+    <div class="container-fluid">
+        <img src="./photo/LumièreBites.png" class="img-fluid" alt="...">
+        <div class="text-center">
+            <br />
+            <br />
+            <h1 class="display-1 fw-bold fst-italic">Lumière Bites</h1>
+            <p class="p-5">Lumière Bites adalah toko camilan online yang menyediakan berbagai pilihan snack enak dengan
+                harga
+                terjangkau. Kami memilih produk dengan rasa yang bikin ketagihan, mengemasnya dengan rapi, dan
+                mengirimnya dengan cepat supaya sampai dengan aman. Cocok untuk teman santai di rumah, bekal sekolah dan
+                kantor, atau oleh-oleh untuk keluarga dan teman. Order dari toko kami supaya tidak ketinggalan promo dan
+                produk terbaru!</p>
+            <br />
+            <img src="./photo/Biru Krem Modern Kedai Dimsum Logo (1).png" width="200px" height="200px" />
+            <br />
+            <br />
+            <br />
+            <h1 class="display-1 fw-bold fst-italic">Lumière Bites info</h1>
+            <p class="p-5">Website ini kami buat khusus untuk menampilkan camilan dan minuman yang dijual di Lumière
+                Bites. Di sini
+                kamu bisa melihat semua produk kami, mulai dari snack renyah, gurih, dan manis sampai minuman segar,
+                lengkap dengan gambar dan harganya. Kami ingin kamu bisa memilih favoritmu dengan mudah sebelum memesan.
+                Kalau sudah ketemu yang cocok, kamu bisa langsung berbelanja lewat toko Shopee kami!</p>
+        </div>
+    </div>
+
+
+    <footer class="bg-dark py-5 mt-5" id="footer">
+
+
+    </footer>
+
+
+
+
+
+
+
+
+    <script>
+        const words = ["Lumière Bites", "Snacks", "Shopee", "Drinks"];
+        let i = 0;
+        setInterval(() => {
+            i = (i + 1) % words.length;
+            document.getElementById("changing-word").textContent = words[i];
+        }, 2000);
+    </script>
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+
+
+    <script src="./Layout.js"></script>
+
+    <script>
+        tampil_header('home')
+        tampil_footer()
+    </script>
+
+
+</body>
+
+</html>
