@@ -6,7 +6,7 @@ function tampil_footer() {
                 <h1 class="display-1 fw-bold text-light">We love <span id="changing-word"
                         class="text-primary fw-bold">Lumière
                         Bites</span> </h1>
-                <a href="https://instagram.com" target="_blank" class="btn text-white"
+                <a href="https://www.instagram.com/lumierebitesofficial?exln=djhnazUweWdrcW9y&utm_source=qr" target="_blank" class="btn text-white"
                     style="background: radial-gradient(circle at 30% 107%, #fdf497 0%, #df4996 45%, #a23ab7 60%, #3f51b5 90%);">
                     <i class="fa-brands fa-instagram me-2"></i> Follow on Instagram
                 </a>
