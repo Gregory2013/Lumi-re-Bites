@@ -78,30 +78,6 @@ function pasangTombolDiKartu() {
     });
 }
 
-function pasangKotakKeranjang() {
-    const footer = document.getElementById("footer");
-    const kotak = document.createElement("div");
-    kotak.className = "container my-5";
-    kotak.innerHTML = `
-        <div class="card">
-            <div class="card-body">
-                <h2>Keranjang</h2>
-                <ul class="list-group list-group-flush" id="isi-keranjang"></ul>
-                <p class="fs-4 fw-bold mt-3" id="total-keranjang">Total: Rp0</p>
-                <a class="btn btn-success" id="pesan-keranjang" target="_blank">Pesan lewat WhatsApp</a>
-            </div>
-        </div>
-    `;
-    footer.before(kotak);
-
-    document.getElementById("pesan-keranjang").addEventListener("click", function (event) {
-        if (keranjang.length === 0) {
-            event.preventDefault();
-            alert("Keranjang masih kosong");
-        }
-    });
-}
-
 function tambahKeKeranjang(nama, harga) {
     const sudahAda = cariItem(nama);
 

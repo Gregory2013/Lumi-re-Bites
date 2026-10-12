@@ -1,0 +1,329 @@
+/* ========================================================
+   Lumière Bites - Typography & Custom Styling
+   Fonts: Outfit (Display/Headings) + Plus Jakarta Sans (Body)
+   ======================================================== */
+
+:root {
+    --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-brand: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-rounded: 'Poppins', sans-serif;
+
+    /* Theme colors */
+    --lb-primary: #0d6efd;
+    --lb-primary-dark: #0a58ca;
+    --lb-accent: #38bdf8;
+    --lb-text-dark: #0f172a;
+    --lb-text-body: #334155;
+    --lb-text-muted: #64748b;
+    --lb-bg: #f8fafc;
+}
+
+/* Base Body Typography */
+body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--lb-text-body);
+    background-color: var(--lb-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Headings System */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--lb-text-dark);
+}
+
+.display-1, .display-2, .display-3, .display-4 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+}
+
+/* Hero Title Styling */
+.hero-title,
+.text-center > h1.display-1 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #0d6efd 0%, #0052cc 50%, #4338ca 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 10px rgba(13, 110, 253, 0.15));
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Clean Readable Paragraphs */
+.text-center > p.p-5 {
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.85;
+    color: var(--lb-text-body);
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 2.5rem !important;
+}
+
+/* Navigation Bar */
+.navbar {
+    box-shadow: 0 4px 20px rgba(13, 110, 253, 0.12);
+}
+
+.navbar-brand {
+    font-family: var(--font-brand) !important;
+    font-weight: 800 !important;
+    font-size: 1.75rem !important;
+    letter-spacing: -0.03em;
+    color: #ffffff !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    transition: transform 0.2s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.02);
+}
+
+.navbar-nav .nav-link {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.15rem !important;
+    letter-spacing: -0.01em;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.navbar-nav .nav-link.active {
+    font-weight: 700;
+    background-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Layout helpers */
+.container.row {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    justify-content: center;
+    max-width: 1320px;
+}
+
+/* Category Titles (Salty / Sweet) */
+.category-title,
+.container > h1.m-5z,
+.container > h1 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 2.25rem;
+    letter-spacing: -0.03em;
+    color: var(--lb-text-dark);
+    margin-top: 2rem !important;
+    margin-bottom: 1.25rem !important;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding-bottom: 0.4rem;
+}
+
+.category-title::after,
+.container > h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 52px;
+    height: 4px;
+    background: linear-gradient(90deg, #0d6efd, #38bdf8);
+    border-radius: 999px;
+}
+
+/* Hero Banner Image */
+.hero-banner {
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    max-height: 420px;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-banner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+}
+
+/* Brand Logo Styling */
+.brand-logo {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid #ffffff;
+    box-shadow: 0 10px 25px rgba(13, 110, 253, 0.18);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    display: inline-block;
+}
+
+.brand-logo:hover {
+    transform: scale(1.06) rotate(2deg);
+    box-shadow: 0 14px 32px rgba(13, 110, 253, 0.28);
+}
+
+/* Product Cards */
+.card {
+    border-radius: 16px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.1);
+}
+
+.card-img-top {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    object-fit: contain;
+    height: 190px;
+    width: 100%;
+    padding: 0.85rem;
+    background-color: #ffffff;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.06);
+}
+
+.card-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    color: var(--lb-text-dark);
+    text-transform: capitalize;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-text {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--lb-text-muted);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+/* Button Typography & Styling */
+.btn {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.card .btn-primary {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border-radius: 999px;
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.25);
+}
+
+.card .btn-success {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(25, 135, 84, 0.2);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Cart Counter Styling */
+.jumlah-kartu {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.05rem;
+    min-width: 28px;
+    text-align: center;
+    color: var(--lb-text-dark);
+}
+
+#total-keranjang {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--lb-primary);
+    font-size: 1.5rem !important;
+}
+
+/* Footer Typography */
+footer {
+    background: linear-gradient(180deg, #111827 0%, #030712 100%) !important;
+}
+
+footer h1.display-1 {
+    font-family: var(--font-heading) !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em;
+    color: #ffffff !important;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    filter: none !important;
+}
+
+#changing-word {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    color: #38bdf8 !important;
+    text-shadow: 0 0 24px rgba(56, 189, 248, 0.4);
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+footer .instagram-btn {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #df4996 45%, #a23ab7 60%, #3f51b5 90%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 0.85rem 2.2rem !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 8px 24px rgba(223, 73, 150, 0.4) !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease !important;
+}
+
+footer .instagram-btn:hover {
+    transform: translateY(-4px) scale(1.03) !important;
+    box-shadow: 0 12px 30px rgba(223, 73, 150, 0.55) !important;
+    filter: brightness(1.08);
+}
