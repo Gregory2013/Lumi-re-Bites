@@ -31,7 +31,7 @@ function tampil_header(Halaman_aktif) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item fs-1">
-                        <a class="nav-link ${class_aktif('home')}" aria-current="page" href="./Index.html">Home</a>
+                        <a class="nav-link ${class_aktif('home')}" aria-current="page" href="./index.html">Home</a>
                     </li>
                     <li class="nav-item fs-1">
                         <a class="nav-link ${class_aktif('snack')} "     href="./Snack.html">Snack</a>
