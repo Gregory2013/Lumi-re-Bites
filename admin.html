@@ -1,0 +1,1203 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Manajemen Data Snack & Minuman - Lumière Bites</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom Typography & Styles -->
+    <link rel="stylesheet" href="./style.css">
+
+    <link rel="icon" type="image/png" href="./photo/Biru Krem Modern Kedai Dimsum Logo (1).png">
+</head>
+
+<body>
+
+    <!-- ========================================================
+         PASSWORD GATE OVERLAY
+         ======================================================== -->
+    <div id="admin-login-overlay" style="
+        position: fixed; inset: 0; z-index: 99999;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        display: flex; align-items: center; justify-content: center;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+    ">
+        <div style="
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+        ">
+            <div style="
+                width: 72px; height: 72px; border-radius: 50%;
+                background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                display: flex; align-items: center; justify-content: center;
+                margin: 0 auto 24px;
+                box-shadow: 0 8px 32px rgba(99,102,241,0.4);
+            ">
+                <i class="fa-solid fa-lock" style="font-size: 28px; color: white;"></i>
+            </div>
+            <h2 style="color: white; font-family: 'Outfit', sans-serif; font-weight: 700; margin-bottom: 8px; font-size: 1.6rem;">
+                Admin Access
+            </h2>
+            <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 28px; font-family: 'Plus Jakarta Sans', sans-serif;">
+                Masukkan password untuk mengakses panel admin Lumière Bites.
+            </p>
+            <div style="position: relative; margin-bottom: 16px;">
+                <input type="password" id="admin-password-input" placeholder="Masukkan password..." 
+                    autocomplete="off"
+                    style="
+                        width: 100%; padding: 14px 50px 14px 20px;
+                        border: 2px solid rgba(255,255,255,0.15);
+                        border-radius: 14px;
+                        background: rgba(255,255,255,0.08);
+                        color: white;
+                        font-size: 1rem;
+                        font-family: 'Plus Jakarta Sans', sans-serif;
+                        outline: none;
+                        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                        box-sizing: border-box;
+                    "
+                    onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.2)';"
+                    onblur="this.style.borderColor='rgba(255,255,255,0.15)'; this.style.boxShadow='none';"
+                >
+                <button type="button" id="toggle-password-visibility" onclick="
+                    const inp = document.getElementById('admin-password-input');
+                    const icon = this.querySelector('i');
+                    if (inp.type === 'password') { inp.type = 'text'; icon.className = 'fa-solid fa-eye-slash'; }
+                    else { inp.type = 'password'; icon.className = 'fa-solid fa-eye'; }
+                " style="
+                    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+                    background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 1rem;
+                ">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
+            <div id="admin-login-error" style="
+                color: #f87171; font-size: 0.85rem; margin-bottom: 12px;
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                display: none;
+            ">
+                <i class="fa-solid fa-circle-exclamation me-1"></i> Password salah. Coba lagi.
+            </div>
+            <button type="button" id="admin-login-btn" style="
+                width: 100%; padding: 14px;
+                background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                color: white; border: none;
+                border-radius: 14px;
+                font-size: 1rem; font-weight: 700;
+                font-family: 'Outfit', sans-serif;
+                cursor: pointer;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+            "
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(99,102,241,0.5)';"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(99,102,241,0.4)';"
+            >
+                <i class="fa-solid fa-right-to-bracket me-2"></i> Masuk
+            </button>
+            <a href="./index.html" style="
+                display: inline-block; margin-top: 20px;
+                color: rgba(255,255,255,0.4); font-size: 0.85rem;
+                text-decoration: none; font-family: 'Plus Jakarta Sans', sans-serif;
+                transition: color 0.2s ease;
+            " onmouseover="this.style.color='rgba(255,255,255,0.7)';" onmouseout="this.style.color='rgba(255,255,255,0.4)';">
+                <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const ADMIN_PASS = 'Spatirasmi72*';
+        const overlay = document.getElementById('admin-login-overlay');
+        const passInput = document.getElementById('admin-password-input');
+        const loginBtn = document.getElementById('admin-login-btn');
+        const errorMsg = document.getElementById('admin-login-error');
+
+        // Check if already authenticated in this session
+        if (sessionStorage.getItem('lumiere_admin_auth') === 'true') {
+            overlay.style.display = 'none';
+        }
+
+        function attemptLogin() {
+            if (passInput.value === ADMIN_PASS) {
+                sessionStorage.setItem('lumiere_admin_auth', 'true');
+                overlay.style.opacity = '0';
+                overlay.style.visibility = 'hidden';
+                setTimeout(() => { overlay.style.display = 'none'; }, 500);
+            } else {
+                errorMsg.style.display = 'block';
+                passInput.style.borderColor = '#f87171';
+                passInput.style.boxShadow = '0 0 0 4px rgba(248,113,113,0.2)';
+                passInput.value = '';
+                passInput.focus();
+                // Shake animation
+                overlay.querySelector('div').style.animation = 'shake 0.4s ease';
+                setTimeout(() => { overlay.querySelector('div').style.animation = ''; }, 400);
+            }
+        }
+
+        loginBtn.addEventListener('click', attemptLogin);
+        passInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') attemptLogin();
+        });
+        passInput.addEventListener('input', () => {
+            errorMsg.style.display = 'none';
+            passInput.style.borderColor = 'rgba(255,255,255,0.15)';
+            passInput.style.boxShadow = 'none';
+        });
+
+        // Auto-focus password input
+        setTimeout(() => passInput.focus(), 100);
+    })();
+    </script>
+
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+    </style>
+
+    <!-- Header Navigation -->
+    <nav class="navbar navbar-expand-lg bg-primary" id="header"></nav>
+
+    <!-- Main Admin Container -->
+    <div class="container my-4 my-lg-5">
+
+        <!-- Top Header & Action Banner -->
+        <div class="admin-header-box mb-4">
+            <div class="row align-items-center g-3">
+                <div class="col-lg-7">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="badge bg-primary px-3 py-2 rounded-pill">
+                            <i class="fa-solid fa-shield-halved me-1"></i> Admin Panel
+                        </span>
+                        <span class="text-secondary small">Lumière Bites Data Management</span>
+                    </div>
+                    <h1 class="display-5 fw-bold mb-2 hero-title text-start" style="margin-top: 0; filter: none;">
+                        Manajemen Data Produk
+                    </h1>
+                    <p class="text-secondary mb-0" style="max-width: 600px; font-size: 1rem; line-height: 1.6;">
+                        Kelola katalog snack dan minuman secara instan. Tambah produk baru (Create), edit informasi (Update), atau hapus produk (Delete) yang tersimpan secara lokal.
+                    </p>
+                </div>
+                <div class="col-lg-5 text-lg-end">
+                    <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+                        <button type="button" class="btn btn-primary btn-lg px-4 shadow-sm" id="btn-buka-tambah">
+                            <i class="fa-solid fa-plus-circle me-2"></i> Tambah Produk
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle py-2 px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-sliders me-1"></i> Opsi Data
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                <li>
+                                    <button class="dropdown-item py-2" id="btn-export-json">
+                                        <i class="fa-solid fa-download me-2 text-primary"></i> Backup / Export JSON
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item py-2" id="btn-import-json">
+                                        <i class="fa-solid fa-upload me-2 text-info"></i> Import JSON
+                                    </button>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <button class="dropdown-item py-2 text-danger" id="btn-reset-katalog">
+                                        <i class="fa-solid fa-rotate-left me-2"></i> Reset ke Data Default
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-outline-danger py-2 px-3" id="btn-admin-logout" title="Keluar dari Admin Panel">
+                            <i class="fa-solid fa-right-from-bracket me-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Stat Metric Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="admin-stat-card">
+                    <div class="stat-icon-wrapper stat-icon-blue">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                    </div>
+                    <div>
+                        <div class="stat-number" id="stat-total-produk">0</div>
+                        <div class="stat-label">Total Produk</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="admin-stat-card">
+                    <div class="stat-icon-wrapper stat-icon-orange">
+                        <i class="fa-solid fa-cookie-bite"></i>
+                    </div>
+                    <div>
+                        <div class="stat-number" id="stat-total-snack">0</div>
+                        <div class="stat-label">Total Snack</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="admin-stat-card">
+                    <div class="stat-icon-wrapper stat-icon-pink">
+                        <i class="fa-solid fa-bottle-water"></i>
+                    </div>
+                    <div>
+                        <div class="stat-number" id="stat-total-minuman">0</div>
+                        <div class="stat-label">Total Minuman</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="admin-stat-card">
+                    <div class="stat-icon-wrapper stat-icon-green">
+                        <i class="fa-solid fa-tags"></i>
+                    </div>
+                    <div>
+                        <div class="stat-number fs-4" id="stat-rata-harga">Rp0</div>
+                        <div class="stat-label">Rata-rata Harga</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar & Filter Controls -->
+        <div class="admin-controls-card mb-4">
+            <div class="row g-3 align-items-center">
+                <!-- Live Search Bar -->
+                <div class="col-md-4">
+                    <div class="search-input-group">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" class="form-control" id="input-pencarian" placeholder="Cari nama produk / deskripsi...">
+                    </div>
+                </div>
+
+                <!-- Filter Category Pills -->
+                <div class="col-md-5">
+                    <div class="d-flex flex-wrap gap-2" id="filter-kategori-container">
+                        <button type="button" class="filter-pill-btn active" data-kategori="all">
+                            Semua (<span id="count-filter-all">0</span>)
+                        </button>
+                        <button type="button" class="filter-pill-btn" data-kategori="salty">
+                            🧂 Asin (<span id="count-filter-salty">0</span>)
+                        </button>
+                        <button type="button" class="filter-pill-btn" data-kategori="sweet">
+                            🍫 Manis (<span id="count-filter-sweet">0</span>)
+                        </button>
+                        <button type="button" class="filter-pill-btn" data-kategori="drink">
+                            🧃 Minuman (<span id="count-filter-drink">0</span>)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sorting & View Switch -->
+                <div class="col-md-3">
+                    <div class="d-flex gap-2 justify-content-md-end">
+                        <select class="form-select form-select-sm" id="select-urutan" style="max-width: 170px;">
+                            <option value="terbaru">Terbaru Ditambahkan</option>
+                            <option value="nama-asc">Nama (A - Z)</option>
+                            <option value="nama-desc">Nama (Z - A)</option>
+                            <option value="harga-asc">Harga: Termurah</option>
+                            <option value="harga-desc">Harga: Termahal</option>
+                        </select>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Tampilan">
+                            <button type="button" class="btn btn-outline-primary active" id="btn-view-table" title="Tampilan Tabel">
+                                <i class="fa-solid fa-table-list"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" id="btn-view-grid" title="Tampilan Kartu">
+                                <i class="fa-solid fa-border-all"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Container Tabel Data Produk (Table View) -->
+        <div id="view-tabel-container" class="admin-table-container">
+            <div class="table-responsive">
+                <table class="table admin-table align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 50px;">#</th>
+                            <th scope="col" style="width: 90px;">Foto</th>
+                            <th scope="col">Nama Produk</th>
+                            <th scope="col">Kategori</th>
+                            <th scope="col">Harga</th>
+                            <th scope="col" class="d-none d-lg-table-cell">Deskripsi</th>
+                            <th scope="col" class="text-center" style="width: 170px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-produk-body">
+                        <!-- Di-render oleh JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Container Grid Kartu Produk (Grid View) -->
+        <div id="view-grid-container" class="row g-4 d-none">
+            <!-- Di-render oleh JavaScript -->
+        </div>
+
+        <!-- Empty State Container (jika hasil filter kosong) -->
+        <div id="empty-state" class="text-center py-5 d-none bg-white rounded-4 border p-4 my-3 shadow-sm">
+            <div class="mb-3 text-secondary" style="font-size: 3.5rem;">
+                <i class="fa-solid fa-box-open"></i>
+            </div>
+            <h4 class="fw-bold text-dark">Tidak Ada Produk Ditemukan</h4>
+            <p class="text-muted mx-auto" style="max-width: 450px;">
+                Coba ubah kata kunci pencarian atau ganti filter kategori untuk menemukan produk yang diinginkan.
+            </p>
+            <button type="button" class="btn btn-outline-primary mt-2" id="btn-reset-filter">
+                <i class="fa-solid fa-rotate-left me-1"></i> Reset Filter
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ========================================================
+         MODAL CREATE & UPDATE PRODUK
+         ======================================================== -->
+    <div class="modal fade" id="modalFormProduk" tabindex="-1" aria-labelledby="modalFormProdukLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header bg-light border-bottom py-3">
+                    <h5 class="modal-title fw-bold" id="modalFormProdukLabel">
+                        <i class="fa-solid fa-circle-plus text-primary me-2"></i> Tambah Produk Baru
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="form-produk" novalidate>
+                        <!-- Hidden ID untuk mode edit -->
+                        <input type="hidden" id="form-id" value="">
+
+                        <div class="row g-4">
+                            <!-- Kolom Kiri: Input Form -->
+                            <div class="col-lg-7">
+                                <!-- Kategori & Tipe -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small text-secondary">
+                                        Kategori Produk <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="d-flex gap-2">
+                                        <div class="form-check form-check-inline border rounded-3 p-2 px-3 flex-fill m-0 text-center">
+                                            <input class="form-check-input" type="radio" name="form-kategori" id="kat-salty" value="salty" checked>
+                                            <label class="form-check-label fw-semibold" for="kat-salty">
+                                                🧂 Snack Asin
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline border rounded-3 p-2 px-3 flex-fill m-0 text-center">
+                                            <input class="form-check-input" type="radio" name="form-kategori" id="kat-sweet" value="sweet">
+                                            <label class="form-check-label fw-semibold" for="kat-sweet">
+                                                🍫 Snack Manis
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline border rounded-3 p-2 px-3 flex-fill m-0 text-center">
+                                            <input class="form-check-input" type="radio" name="form-kategori" id="kat-drink" value="drink">
+                                            <label class="form-check-label fw-semibold" for="kat-drink">
+                                                🧃 Minuman
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Nama Produk -->
+                                <div class="mb-3">
+                                    <label for="form-nama" class="form-label fw-bold small text-secondary">
+                                        Nama Produk <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="form-nama" placeholder="Contoh: Chitato Sapi Panggang 68g" required>
+                                    <div class="invalid-feedback">Nama produk wajib diisi.</div>
+                                </div>
+
+                                <!-- Harga Produk -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label for="form-harga" class="form-label fw-bold small text-secondary mb-0">
+                                            Harga Satuan (Rupiah) <span class="text-danger">*</span>
+                                        </label>
+                                        <span class="badge bg-light text-primary border" id="preview-harga-badge">Rp0</span>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light fw-bold">Rp</span>
+                                        <input type="number" class="form-control" id="form-harga" placeholder="Contoh: 10000" min="500" step="500" required>
+                                    </div>
+                                    <div class="invalid-feedback">Harga minimal Rp500.</div>
+                                </div>
+
+                                <!-- URL Gambar & Upload -->
+                                <div class="mb-3">
+                                    <label for="form-gambar" class="form-label fw-bold small text-secondary">
+                                        URL Gambar / Foto Produk
+                                    </label>
+                                    <input type="url" class="form-control mb-2" id="form-gambar" placeholder="https://example.com/foto-snack.jpg">
+                                    
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="text-muted small">Atau upload gambar lokal:</span>
+                                        <label class="btn btn-sm btn-outline-secondary mb-0" for="form-upload-file">
+                                            <i class="fa-solid fa-cloud-arrow-up me-1"></i> Pilih File Gambar
+                                        </label>
+                                        <input type="file" id="form-upload-file" accept="image/*" class="d-none">
+                                    </div>
+                                </div>
+
+                                <!-- Deskripsi Singkat -->
+                                <div class="mb-3">
+                                    <label for="form-deskripsi" class="form-label fw-bold small text-secondary">
+                                        Deskripsi / Catatan Promo
+                                    </label>
+                                    <textarea class="form-control" id="form-deskripsi" rows="2" placeholder="Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.">Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.</textarea>
+                                </div>
+
+                                <!-- Pesan WhatsApp Kustom (Opsional) -->
+                                <div class="mb-0">
+                                    <label for="form-wa" class="form-label fw-bold small text-secondary">
+                                        Teks Pesan WhatsApp (Otomatis)
+                                    </label>
+                                    <input type="text" class="form-control" id="form-wa" placeholder="hallo saya mau beli...">
+                                </div>
+                            </div>
+
+                            <!-- Kolom Kanan: Live Card Preview -->
+                            <div class="col-lg-5">
+                                <label class="form-label fw-bold small text-secondary text-center d-block">
+                                    <i class="fa-solid fa-eye me-1"></i> Live Preview Kartu Customer
+                                </label>
+                                <div class="p-3 bg-light rounded-4 border d-flex justify-content-center">
+                                    <div class="card shadow-sm" style="width: 16.5rem;" id="preview-kartu">
+                                        <img src="./photo/Biru Krem Modern Kedai Dimsum Logo (1).png" class="card-img-top" id="preview-img" alt="Preview">
+                                        <div class="card-body">
+                                            <h5 class="card-title" id="preview-nama">Nama Produk</h5>
+                                            <p class="card-text small text-muted" id="preview-desc">"Kalau mau beli produk ini, beli di toko Shopee Lumière Bites."</p>
+                                            <div class="d-flex gap-2">
+                                                <a class="btn btn-primary btn-sm" id="preview-btn-harga">0 rp</a>
+                                                <a class="btn btn-success btn-sm">Whatsapp</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <span class="text-muted small">
+                                        <i class="fa-solid fa-circle-info me-1"></i> Preview akan berubah langsung saat Anda mengetik.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer Modal Actions -->
+                        <div class="modal-footer border-0 px-0 pb-0 mt-4">
+                            <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary px-4 shadow-sm" id="btn-simpan-produk">
+                                <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Produk
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL KONFIRMASI HAPUS (DELETE)
+         ======================================================== -->
+    <div class="modal fade" id="modalHapus" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-body p-4 text-center">
+                    <div class="mb-3 text-danger" style="font-size: 3.5rem;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">Hapus Produk Ini?</h4>
+                    <p class="text-secondary mb-3">
+                        Apakah Anda yakin ingin menghapus produk ini dari katalog Lumière Bites? Tindakan ini tidak dapat dibatalkan.
+                    </p>
+                    
+                    <!-- Preview Ringkas Produk Dihapus -->
+                    <div class="p-3 bg-light rounded-3 border d-flex align-items-center gap-3 text-start mb-4">
+                        <img src="" id="hapus-preview-img" class="product-thumb" alt="Hapus item">
+                        <div class="overflow-hidden">
+                            <div class="fw-bold text-dark text-truncate" id="hapus-preview-nama">-</div>
+                            <div class="text-primary fw-semibold small" id="hapus-preview-harga">-</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-danger px-4" id="btn-eksekusi-hapus">
+                            <i class="fa-solid fa-trash me-1"></i> Ya, Hapus Produk
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL KONFIRMASI RESET KATALOG
+         ======================================================== -->
+    <div class="modal fade" id="modalReset" tabindex="-1" aria-labelledby="modalResetLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-body p-4 text-center">
+                    <div class="mb-3 text-warning" style="font-size: 3.5rem;">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">Reset ke Data Default?</h4>
+                    <p class="text-secondary mb-4">
+                        Semua data produk yang Anda buat atau ubah akan dikembalikan ke daftar bawaan katalog resmi Lumière Bites (28 produk bawaan).
+                    </p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-warning px-4 text-dark fw-bold" id="btn-eksekusi-reset">
+                            <i class="fa-solid fa-arrows-rotate me-1"></i> Pulihkan Sekarang
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL IMPORT JSON
+         ======================================================== -->
+    <div class="modal fade" id="modalImport" tabindex="-1" aria-labelledby="modalImportLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header bg-light border-bottom py-3">
+                    <h5 class="modal-title fw-bold" id="modalImportLabel">
+                        <i class="fa-solid fa-file-import text-primary me-2"></i> Import Data Katalog (JSON)
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-secondary small mb-3">
+                        Pilih file backup .json katalog produk Lumière Bites yang telah disimpan sebelumnya.
+                    </p>
+                    <div class="mb-3">
+                        <label for="input-file-json" class="form-label fw-bold small">Pilih File JSON</label>
+                        <input class="form-control" type="file" id="input-file-json" accept=".json">
+                    </div>
+                    <div class="mb-0">
+                        <label for="input-text-json" class="form-label fw-bold small">Atau Tempel JSON Disini</label>
+                        <textarea class="form-control" id="input-text-json" rows="4" placeholder="Tempel array JSON produk..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="btn-eksekusi-import">
+                        <i class="fa-solid fa-check me-1"></i> Proses Import
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="custom-toast-container" id="toast-container"></div>
+
+    <!-- Footer -->
+    <footer class="bg-dark py-5 mt-5" id="footer"></footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+    <!-- Layout & Products Modules -->
+    <script src="./Layout.js"></script>
+    <script src="./products.js"></script>
+
+    <!-- Admin Panel Logic -->
+    <script>
+        // Inisialisasi Header & Footer
+        tampil_header('admin');
+        tampil_footer();
+
+        // Elemen Modal Bootstrap
+        const modalFormEl = document.getElementById('modalFormProduk');
+        const modalForm = new bootstrap.Modal(modalFormEl);
+
+        const modalHapusEl = document.getElementById('modalHapus');
+        const modalHapus = new bootstrap.Modal(modalHapusEl);
+
+        const modalResetEl = document.getElementById('modalReset');
+        const modalReset = new bootstrap.Modal(modalResetEl);
+
+        const modalImportEl = document.getElementById('modalImport');
+        const modalImport = new bootstrap.Modal(modalImportEl);
+
+        // State Aplikasi Admin
+        let stateAdmin = {
+            kategoriAktif: 'all',
+            kataKunci: '',
+            urutan: 'terbaru',
+            tampilan: 'table', // 'table' atau 'grid'
+            idProdukAkanDihapus: null
+        };
+
+        // DOM Referensi
+        const tabelBody = document.getElementById('tabel-produk-body');
+        const viewTabel = document.getElementById('view-tabel-container');
+        const viewGrid = document.getElementById('view-grid-container');
+        const emptyState = document.getElementById('empty-state');
+        const inputCari = document.getElementById('input-pencarian');
+        const selectUrutan = document.getElementById('select-urutan');
+        const btnViewTable = document.getElementById('btn-view-table');
+        const btnViewGrid = document.getElementById('btn-view-grid');
+
+        // Form Fields
+        const formProduk = document.getElementById('form-produk');
+        const formId = document.getElementById('form-id');
+        const formNama = document.getElementById('form-nama');
+        const formHarga = document.getElementById('form-harga');
+        const formGambar = document.getElementById('form-gambar');
+        const formUploadFile = document.getElementById('form-upload-file');
+        const formDeskripsi = document.getElementById('form-deskripsi');
+        const formWa = document.getElementById('form-wa');
+        const modalLabel = document.getElementById('modalFormProdukLabel');
+
+        // Live Preview Referensi
+        const previewNama = document.getElementById('preview-nama');
+        const previewDesc = document.getElementById('preview-desc');
+        const previewImg = document.getElementById('preview-img');
+        const previewBtnHarga = document.getElementById('preview-btn-harga');
+        const previewHargaBadge = document.getElementById('preview-harga-badge');
+
+        // ========================================================
+        // TOAST NOTIFIKASI
+        // ========================================================
+        function tampilkanToast(pesan, tipe = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `custom-toast toast-${tipe}`;
+            
+            let ikon = '<i class="fa-solid fa-circle-check text-success fs-5"></i>';
+            if (tipe === 'danger') ikon = '<i class="fa-solid fa-circle-xmark text-danger fs-5"></i>';
+            if (tipe === 'info') ikon = '<i class="fa-solid fa-circle-info text-info fs-5"></i>';
+
+            toast.innerHTML = `
+                ${ikon}
+                <div class="flex-grow-1">
+                    <div class="fw-bold small text-dark">${pesan}</div>
+                </div>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(60px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+
+        // ========================================================
+        // UPDATE METRIC STATS & FILTER COUNTS
+        // ========================================================
+        function perbaruiStatistik() {
+            const list = ambilSemuaProduk();
+            const total = list.length;
+            const snackList = list.filter(p => p.tipe === 'snack' || p.kategori === 'salty' || p.kategori === 'sweet');
+            const drinkList = list.filter(p => p.tipe === 'drink' || p.kategori === 'drink');
+            const saltyCount = list.filter(p => p.kategori === 'salty').length;
+            const sweetCount = list.filter(p => p.kategori === 'sweet').length;
+
+            const totalHarga = list.reduce((acc, curr) => acc + (Number(curr.harga) || 0), 0);
+            const rataHarga = total > 0 ? Math.round(totalHarga / total) : 0;
+
+            document.getElementById('stat-total-produk').textContent = total;
+            document.getElementById('stat-total-snack').textContent = snackList.length;
+            document.getElementById('stat-total-minuman').textContent = drinkList.length;
+            document.getElementById('stat-rata-harga').textContent = formatRupiahAdmin(rataHarga);
+
+            // Update badge counts di filter pills
+            document.getElementById('count-filter-all').textContent = total;
+            document.getElementById('count-filter-salty').textContent = saltyCount;
+            document.getElementById('count-filter-sweet').textContent = sweetCount;
+            document.getElementById('count-filter-drink').textContent = drinkList.length;
+        }
+
+        // ========================================================
+        // RENDER LIST PRODUK
+        // ========================================================
+        function muatDanTampilkanProduk() {
+            perbaruiStatistik();
+            let list = ambilSemuaProduk();
+
+            // 1. Filter Kategori
+            if (stateAdmin.kategoriAktif !== 'all') {
+                list = list.filter(p => p.kategori === stateAdmin.kategoriAktif);
+            }
+
+            // 2. Filter Pencarian
+            if (stateAdmin.kataKunci.trim() !== '') {
+                const q = stateAdmin.kataKunci.toLowerCase().trim();
+                list = list.filter(p => 
+                    (p.nama && p.nama.toLowerCase().includes(q)) || 
+                    (p.deskripsi && p.deskripsi.toLowerCase().includes(q))
+                );
+            }
+
+            // 3. Sorting
+            list.sort((a, b) => {
+                if (stateAdmin.urutan === 'nama-asc') return a.nama.localeCompare(b.nama);
+                if (stateAdmin.urutan === 'nama-desc') return b.nama.localeCompare(a.nama);
+                if (stateAdmin.urutan === 'harga-asc') return (a.harga || 0) - (b.harga || 0);
+                if (stateAdmin.urutan === 'harga-desc') return (b.harga || 0) - (a.harga || 0);
+                // default: terbaru
+                return (b.createdAt || 0) - (a.createdAt || 0);
+            });
+
+            // Tampilkan atau sembunyikan Empty State
+            if (list.length === 0) {
+                emptyState.classList.remove('d-none');
+                viewTabel.classList.add('d-none');
+                viewGrid.classList.add('d-none');
+                return;
+            } else {
+                emptyState.classList.add('d-none');
+                if (stateAdmin.tampilan === 'table') {
+                    viewTabel.classList.remove('d-none');
+                    viewGrid.classList.add('d-none');
+                } else {
+                    viewTabel.classList.add('d-none');
+                    viewGrid.classList.remove('d-none');
+                }
+            }
+
+            // Render Table
+            renderTable(list);
+
+            // Render Grid
+            renderGrid(list);
+        }
+
+        function renderTable(list) {
+            tabelBody.innerHTML = '';
+            list.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                const fallbackImg = "./photo/Biru Krem Modern Kedai Dimsum Logo (1).png";
+                
+                tr.innerHTML = `
+                    <td class="text-secondary fw-semibold">${index + 1}</td>
+                    <td>
+                        <img src="${item.gambar || fallbackImg}" 
+                             class="product-thumb" 
+                             alt="${item.nama}"
+                             onerror="this.onerror=null; this.src='${fallbackImg}';">
+                    </td>
+                    <td>
+                        <div class="product-name-text">${item.nama}</div>
+                        <div class="text-secondary small d-lg-none">${item.deskripsi || ''}</div>
+                    </td>
+                    <td>${getBadgeKategoriHTML(item.kategori)}</td>
+                    <td>
+                        <span class="product-price-badge">${formatRupiahAdmin(item.harga)}</span>
+                    </td>
+                    <td class="d-none d-lg-table-cell text-secondary small" style="max-width: 250px;">
+                        <span class="text-truncate d-inline-block" style="max-width: 240px;" title="${item.deskripsi || ''}">
+                            ${item.deskripsi || '-'}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center gap-1">
+                            <button class="btn-action-edit btn-edit" data-id="${item.id}" title="Edit Produk">
+                                <i class="fa-solid fa-pen-to-square me-1"></i> Edit
+                            </button>
+                            <button class="btn-action-delete btn-delete" data-id="${item.id}" title="Hapus Produk">
+                                <i class="fa-solid fa-trash-can me-1"></i> Hapus
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tabelBody.appendChild(tr);
+            });
+        }
+
+        function renderGrid(list) {
+            viewGrid.innerHTML = '';
+            const fallbackImg = "./photo/Biru Krem Modern Kedai Dimsum Logo (1).png";
+            
+            list.forEach(item => {
+                const col = document.createElement('div');
+                col.className = 'col-sm-6 col-md-4 col-lg-3 d-flex';
+                col.innerHTML = `
+                    <div class="card w-100 position-relative shadow-sm d-flex flex-column">
+                        <div class="position-absolute top-0 end-0 m-2">
+                            ${getBadgeKategoriHTML(item.kategori)}
+                        </div>
+                        <img src="${item.gambar || fallbackImg}" 
+                             class="card-img-top" 
+                             alt="${item.nama}"
+                             onerror="this.onerror=null; this.src='${fallbackImg}';">
+                        <div class="card-body d-flex flex-column flex-grow-1">
+                            <h5 class="card-title text-truncate" title="${item.nama}">${item.nama}</h5>
+                            <p class="card-text small text-secondary flex-grow-1">"${item.deskripsi || ''}"</p>
+                            <div class="mb-3">
+                                <span class="product-price-badge w-100 text-center">${formatRupiahAdmin(item.harga)}</span>
+                            </div>
+                            <div class="admin-card-actions">
+                                <button class="btn btn-sm btn-outline-primary flex-fill btn-edit" data-id="${item.id}">
+                                    <i class="fa-solid fa-pen-to-square me-1"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger flex-fill btn-delete" data-id="${item.id}">
+                                    <i class="fa-solid fa-trash-can me-1"></i> Hapus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                viewGrid.appendChild(col);
+            });
+        }
+
+        // ========================================================
+        // EVENT LISTENER: PENCARIAN, FILTER, URUTAN, VIEW
+        // ========================================================
+        inputCari.addEventListener('input', (e) => {
+            stateAdmin.kataKunci = e.target.value;
+            muatDanTampilkanProduk();
+        });
+
+        document.getElementById('filter-kategori-container').addEventListener('click', (e) => {
+            const btn = e.target.closest('.filter-pill-btn');
+            if (!btn) return;
+            document.querySelectorAll('.filter-pill-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            stateAdmin.kategoriAktif = btn.dataset.kategori;
+            muatDanTampilkanProduk();
+        });
+
+        selectUrutan.addEventListener('change', (e) => {
+            stateAdmin.urutan = e.target.value;
+            muatDanTampilkanProduk();
+        });
+
+        btnViewTable.addEventListener('click', () => {
+            stateAdmin.tampilan = 'table';
+            btnViewTable.classList.add('active');
+            btnViewGrid.classList.remove('active');
+            muatDanTampilkanProduk();
+        });
+
+        btnViewGrid.addEventListener('click', () => {
+            stateAdmin.tampilan = 'grid';
+            btnViewGrid.classList.add('active');
+            btnViewTable.classList.remove('active');
+            muatDanTampilkanProduk();
+        });
+
+        document.getElementById('btn-reset-filter').addEventListener('click', () => {
+            stateAdmin.kataKunci = '';
+            stateAdmin.kategoriAktif = 'all';
+            inputCari.value = '';
+            document.querySelectorAll('.filter-pill-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.kategori === 'all');
+            });
+            muatDanTampilkanProduk();
+        });
+
+        // ========================================================
+        // LIVE FORM PREVIEW LOGIC
+        // ========================================================
+        function perbaruiLivePreview() {
+            const nama = formNama.value.trim() || 'Nama Produk';
+            const harga = Number(formHarga.value) || 0;
+            const gambar = formGambar.value.trim() || './photo/Biru Krem Modern Kedai Dimsum Logo (1).png';
+            const deskripsi = formDeskripsi.value.trim() || 'Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.';
+
+            previewNama.textContent = nama;
+            previewDesc.textContent = `"${deskripsi}"`;
+            previewImg.src = gambar;
+            previewImg.onerror = () => { previewImg.src = './photo/Biru Krem Modern Kedai Dimsum Logo (1).png'; };
+            previewBtnHarga.textContent = formatHargaTombol(harga);
+            previewHargaBadge.textContent = formatRupiahAdmin(harga);
+        }
+
+        formNama.addEventListener('input', () => {
+            perbaruiLivePreview();
+            if (!formWa.dataset.userEdited) {
+                formWa.value = 'hallo saya mau beli ' + formNama.value.trim();
+            }
+        });
+        formHarga.addEventListener('input', perbaruiLivePreview);
+        formGambar.addEventListener('input', perbaruiLivePreview);
+        formDeskripsi.addEventListener('input', perbaruiLivePreview);
+        formWa.addEventListener('input', () => { formWa.dataset.userEdited = 'true'; });
+
+        // Upload file gambar lokal (Base64)
+        formUploadFile.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Ukuran file gambar maksimal 2MB.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                formGambar.value = evt.target.result;
+                perbaruiLivePreview();
+                tampilkanToast('Gambar berhasil di-upload!', 'info');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // ========================================================
+        // CREATE: BUKA MODAL TAMBAH PRODUK
+        // ========================================================
+        document.getElementById('btn-buka-tambah').addEventListener('click', () => {
+            formProduk.reset();
+            formId.value = '';
+            delete formWa.dataset.userEdited;
+            modalLabel.innerHTML = '<i class="fa-solid fa-circle-plus text-primary me-2"></i> Tambah Produk Baru';
+            document.getElementById('btn-simpan-produk').innerHTML = '<i class="fa-solid fa-plus me-1"></i> Tambahkan ke Katalog';
+            
+            // Set default radio
+            document.getElementById('kat-salty').checked = true;
+            formDeskripsi.value = 'Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.';
+            formWa.value = 'hallo saya mau beli ';
+            formGambar.value = '';
+            
+            perbaruiLivePreview();
+            formProduk.classList.remove('was-validated');
+            modalForm.show();
+        });
+
+        // ========================================================
+        // UPDATE: BUKA MODAL EDIT PRODUK
+        // ========================================================
+        function bukaModalEdit(id) {
+            const produk = cariProdukById(id);
+            if (!produk) {
+                tampilkanToast('Produk tidak ditemukan!', 'danger');
+                return;
+            }
+
+            formProduk.reset();
+            formId.value = produk.id;
+            modalLabel.innerHTML = '<i class="fa-solid fa-pen-to-square text-primary me-2"></i> Edit Data Produk';
+            document.getElementById('btn-simpan-produk').innerHTML = '<i class="fa-solid fa-floppy-disk me-1"></i> Perbarui Produk';
+
+            // Kategori
+            if (produk.kategori === 'salty') document.getElementById('kat-salty').checked = true;
+            else if (produk.kategori === 'sweet') document.getElementById('kat-sweet').checked = true;
+            else document.getElementById('kat-drink').checked = true;
+
+            formNama.value = produk.nama || '';
+            formHarga.value = produk.harga || 0;
+            formGambar.value = produk.gambar || '';
+            formDeskripsi.value = produk.deskripsi || '';
+            formWa.value = produk.pesanWa || ('hallo saya mau beli ' + produk.nama);
+            formWa.dataset.userEdited = 'true';
+
+            perbaruiLivePreview();
+            formProduk.classList.remove('was-validated');
+            modalForm.show();
+        }
+
+        // ========================================================
+        // SIMPAN PRODUK (HANDLE CREATE & UPDATE)
+        // ========================================================
+        formProduk.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!formProduk.checkValidity()) {
+                e.stopPropagation();
+                formProduk.classList.add('was-validated');
+                return;
+            }
+
+            const id = formId.value;
+            const kategoriPilihan = document.querySelector('input[name="form-kategori"]:checked').value;
+            const tipe = kategoriPilihan === 'drink' ? 'drink' : 'snack';
+
+            const dataProduk = {
+                nama: formNama.value.trim(),
+                kategori: kategoriPilihan,
+                tipe: tipe,
+                harga: Number(formHarga.value) || 0,
+                gambar: formGambar.value.trim() || './photo/Biru Krem Modern Kedai Dimsum Logo (1).png',
+                deskripsi: formDeskripsi.value.trim() || 'Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.',
+                pesanWa: formWa.value.trim() || ('hallo saya mau beli ' + formNama.value.trim())
+            };
+
+            if (id) {
+                // Mode Update
+                updateProduk(id, dataProduk);
+                tampilkanToast(`Produk "${dataProduk.nama}" berhasil diperbarui!`, 'success');
+            } else {
+                // Mode Create
+                tambahProduk(dataProduk);
+                tampilkanToast(`Produk "${dataProduk.nama}" berhasil ditambahkan!`, 'success');
+            }
+
+            modalForm.hide();
+            muatDanTampilkanProduk();
+        });
+
+        // ========================================================
+        // DELETE: MODAL KONFIRMASI & EKSEKUSI HAPUS
+        // ========================================================
+        function bukaModalHapus(id) {
+            const produk = cariProdukById(id);
+            if (!produk) return;
+
+            stateAdmin.idProdukAkanDihapus = id;
+            document.getElementById('hapus-preview-nama').textContent = produk.nama;
+            document.getElementById('hapus-preview-harga').textContent = formatRupiahAdmin(produk.harga);
+            
+            const img = document.getElementById('hapus-preview-img');
+            img.src = produk.gambar || './photo/Biru Krem Modern Kedai Dimsum Logo (1).png';
+            img.onerror = () => { img.src = './photo/Biru Krem Modern Kedai Dimsum Logo (1).png'; };
+
+            modalHapus.show();
+        }
+
+        document.getElementById('btn-eksekusi-hapus').addEventListener('click', () => {
+            if (!stateAdmin.idProdukAkanDihapus) return;
+            const produk = cariProdukById(stateAdmin.idProdukAkanDihapus);
+            const nama = produk ? produk.nama : 'Produk';
+            
+            hapusProduk(stateAdmin.idProdukAkanDihapus);
+            modalHapus.hide();
+            stateAdmin.idProdukAkanDihapus = null;
+
+            tampilkanToast(`Produk "${nama}" telah dihapus!`, 'danger');
+            muatDanTampilkanProduk();
+        });
+
+        // Delegasi klik tombol Edit dan Hapus di Table dan Grid
+        document.addEventListener('click', (e) => {
+            const btnEdit = e.target.closest('.btn-edit');
+            if (btnEdit) {
+                bukaModalEdit(btnEdit.dataset.id);
+                return;
+            }
+
+            const btnDelete = e.target.closest('.btn-delete');
+            if (btnDelete) {
+                bukaModalHapus(btnDelete.dataset.id);
+                return;
+            }
+        });
+
+        // ========================================================
+        // RESET KE DEFAULT CATALOGUE
+        // ========================================================
+        document.getElementById('btn-reset-katalog').addEventListener('click', () => {
+            modalReset.show();
+        });
+
+        document.getElementById('btn-eksekusi-reset').addEventListener('click', () => {
+            resetProdukKeDefault();
+            modalReset.hide();
+            tampilkanToast('Katalog berhasil dipulihkan ke 28 produk bawaan!', 'info');
+            muatDanTampilkanProduk();
+        });
+
+        // ========================================================
+        // EXPORT / BACKUP JSON
+        // ========================================================
+        document.getElementById('btn-export-json').addEventListener('click', () => {
+            const list = ambilSemuaProduk();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(list, null, 2));
+            const downloadAnchor = document.createElement('a');
+            const tgl = new Date().toISOString().slice(0, 10);
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `lumiere_bites_products_backup_${tgl}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            tampilkanToast('File backup JSON berhasil diunduh!', 'success');
+        });
+
+        // ========================================================
+        // IMPORT JSON
+        // ========================================================
+        document.getElementById('btn-import-json').addEventListener('click', () => {
+            document.getElementById('input-file-json').value = '';
+            document.getElementById('input-text-json').value = '';
+            modalImport.show();
+        });
+
+        document.getElementById('input-file-json').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                document.getElementById('input-text-json').value = evt.target.result;
+            };
+            reader.readAsText(file);
+        });
+
+        document.getElementById('btn-eksekusi-import').addEventListener('click', () => {
+            const raw = document.getElementById('input-text-json').value.trim();
+            if (!raw) {
+                alert('Silakan pilih file atau tempel format JSON terlebih dahulu.');
+                return;
+            }
+
+            try {
+                const parsed = JSON.parse(raw);
+                if (!Array.isArray(parsed) || parsed.length === 0) {
+                    throw new Error('Data JSON harus berupa array daftar produk.');
+                }
+                
+                // Simpan produk
+                simpanSemuaProduk(parsed);
+                modalImport.hide();
+                tampilkanToast(`Berhasil mengimpor ${parsed.length} produk!`, 'success');
+                muatDanTampilkanProduk();
+            } catch (err) {
+                alert('Format JSON tidak valid: ' + err.message);
+            }
+        });
+
+        // ========================================================
+        // LOGOUT ADMIN
+        // ========================================================
+        document.getElementById('btn-admin-logout').addEventListener('click', () => {
+            sessionStorage.removeItem('lumiere_admin_auth');
+            location.reload();
+        });
+
+        // ========================================================
+        // INITIAL LOAD
+        // ========================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            muatDanTampilkanProduk();
+        });
+    </script>
+
+</body>
+</html>

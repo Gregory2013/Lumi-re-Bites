@@ -37,7 +37,7 @@ function tampil_header(Halaman_aktif) {
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto gap-2">
+                <ul class="navbar-nav ms-auto gap-2 align-items-lg-center">
                     <li class="nav-item">
                         <a class="nav-link ${class_aktif('home')}" aria-current="page" href="./index.html">Home</a>
                     </li>
