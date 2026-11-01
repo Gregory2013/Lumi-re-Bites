@@ -328,6 +328,38 @@ footer .instagram-btn:hover {
     filter: brightness(1.08);
 }
 
+/* Shopee Brand Button */
+.shopee-btn {
+    background: linear-gradient(135deg, #ff5722 0%, #ee4d2d 50%, #d83a17 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 0.85rem 2.4rem !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    font-family: var(--font-heading);
+    letter-spacing: 0.01em;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    box-shadow: 0 8px 24px rgba(238, 77, 45, 0.35) !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease !important;
+    text-decoration: none;
+}
+
+.shopee-btn:hover {
+    transform: translateY(-3px) scale(1.03) !important;
+    box-shadow: 0 14px 30px rgba(238, 77, 45, 0.5) !important;
+    filter: brightness(1.08);
+    color: #ffffff !important;
+}
+
+.shopee-btn:active {
+    transform: translateY(0) scale(0.99) !important;
+}
+
+
 /* ========================================================
    Admin Panel Modern Styling
    ======================================================== */
