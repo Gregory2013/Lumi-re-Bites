@@ -1,0 +1,17 @@
+{
+  "name": "lumiere-bites",
+  "version": "1.0.0",
+  "description": "Lumière Bites Online Snack & Drink Store with Midtrans Payment Gateway",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "lumiere-bites",
+    "midtrans",
+    "payment-gateway"
+  ],
+  "author": "Lumière Bites",
+  "license": "ISC"
+}

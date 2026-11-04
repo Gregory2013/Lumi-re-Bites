@@ -1216,3 +1216,146 @@ footer .instagram-btn:hover {
         font-size: 1.4rem;
     }
 }
+
+/* ========================================================
+   Midtrans Payment Gateway & Checkout Styling
+   ======================================================== */
+
+.btn-midtrans {
+    background: linear-gradient(135deg, #0d6efd 0%, #2563eb 50%, #4f46e5 100%);
+    color: #ffffff !important;
+    border: none;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    letter-spacing: 0.01em;
+    padding: 10px 22px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-midtrans:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #4338ca 100%);
+    color: #ffffff !important;
+}
+
+.btn-midtrans:active {
+    transform: translateY(0);
+}
+
+.payment-badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #f1f5f9;
+    border-radius: 12px;
+    border: 1px dashed #cbd5e1;
+}
+
+.payment-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #334155;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.payment-badge-pill i {
+    font-size: 0.85rem;
+}
+
+.payment-badge-qris { color: #dc2626; }
+.payment-badge-gopay { color: #0284c7; }
+.payment-badge-shopee { color: #ea580c; }
+.payment-badge-bank { color: #2563eb; }
+.payment-badge-card { color: #7c3aed; }
+
+/* Checkout Modal Custom */
+.lb-modal-content {
+    border-radius: 20px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+    overflow: hidden;
+}
+
+.lb-modal-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    padding: 20px 24px;
+    border-bottom: 0;
+}
+
+.lb-modal-header .btn-close {
+    filter: invert(1);
+    opacity: 0.8;
+}
+
+.lb-modal-body {
+    padding: 24px;
+    background: #f8fafc;
+}
+
+.lb-form-control {
+    border-radius: 10px;
+    border: 1.5px solid #cbd5e1;
+    padding: 10px 14px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.lb-form-control:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+    outline: none;
+}
+
+/* Digital Receipt Card */
+.receipt-card {
+    background: #ffffff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+}
+
+.receipt-card::before,
+.receipt-card::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #f8fafc;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.receipt-card::before { left: -10px; }
+.receipt-card::after { right: -10px; }
+
+.receipt-item-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.9rem;
+    border-bottom: 1px dotted #e2e8f0;
+}
+
+.receipt-item-row:last-child {
+    border-bottom: none;
+}
+
