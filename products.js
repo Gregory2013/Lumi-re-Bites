@@ -3,7 +3,9 @@
 // Mendukung Create, Read, Update, Delete dengan LocalStorage
 // ========================================================
 
-const STORAGE_KEY_PRODUK = "lumiere_products_data_v1";
+const STORAGE_KEY_PRODUK = "lumiere_products_data_v2";
+const DATA_VERSION_KEY = "lumiere_products_version";
+const CURRENT_DATA_VERSION = "2026.11.04_v2";
 const NOMOR_WA_DEFAULT = "6285722719770";
 
 // Data Awal Katalog Lumière Bites
@@ -25,10 +27,10 @@ const DEFAULT_PRODUCTS = [
         nama: "Kusuka Seaweed 60g",
         kategori: "salty",
         tipe: "snack",
-        harga: 98000,
+        harga: 9800,
         gambar: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//96/MTA-3971283/kusuka_kusuka_original_keripik_singkong_-180_g-_full01_sc3kbkw5.jpg",
         deskripsi: "Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.",
-        pesanWa: "hallo saya mau beli Kusuka Orignal 180g",
+        pesanWa: "hallo saya mau beli Kusuka Seaweed 60g",
         createdAt: 1710000002000
     },
     {
@@ -36,10 +38,10 @@ const DEFAULT_PRODUCTS = [
         nama: "Kusuka Barbeque 60g",
         kategori: "salty",
         tipe: "snack",
-        harga: 98000,
+        harga: 9800,
         gambar: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//105/MTA-16554975/kusuka_kusuka_barbeque_keripik_singkong_-180_g-_official_store_full01_l7pnuu6y.jpg",
         deskripsi: "Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.",
-        pesanWa: "hallo saya mau beli Kusuka Barbeque 180g",
+        pesanWa: "hallo saya mau beli Kusuka Barbeque 60g",
         createdAt: 1710000003000
     },
     {
@@ -47,10 +49,10 @@ const DEFAULT_PRODUCTS = [
         nama: "Kusuka lada hitam 60g",
         kategori: "salty",
         tipe: "snack",
-        harga: 10000,
+        harga: 9800,
         gambar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBl1h6K7vaNjRaEQP1Ke-GiRoYEIFZoqPUnFNSWT4AbA&s=10",
         deskripsi: "Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.",
-        pesanWa: "hallo saya mau beli Kusuka lada hitam 180g",
+        pesanWa: "hallo saya mau beli Kusuka lada hitam 60g",
         createdAt: 1710000004000
     },
     {
@@ -58,7 +60,7 @@ const DEFAULT_PRODUCTS = [
         nama: "chitato beef barbeque 65gr",
         kategori: "salty",
         tipe: "snack",
-        harga: 10000,
+        harga: 9800,
         gambar: "https://down-id.img.susercontent.com/file/id-11134207-7rasl-m4l35140e832ab",
         deskripsi: "Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.",
         pesanWa: "hallo saya mau beli chitato beef barbeque 65gr",
@@ -69,7 +71,7 @@ const DEFAULT_PRODUCTS = [
         nama: "Mie Kremez Shorr Ayam Bakar",
         kategori: "salty",
         tipe: "snack",
-        harga: 3500,
+        harga: 5500,
         gambar: "https://down-id.img.susercontent.com/file/id-11134207-82250-mkmht0wkdmo38b",
         deskripsi: "Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.",
         pesanWa: "hallo saya mau beli Mie Kremez Shorr Ayam Bakar",
@@ -80,7 +82,7 @@ const DEFAULT_PRODUCTS = [
         nama: "Mie Gemez Enaak",
         kategori: "salty",
         tipe: "snack",
-        harga: 3500,
+        harga: 5500,
         gambar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR39G5Y8HKoJ5FNj9fpgDXFbCHry1tggknWtPSjMXMgmXI70-ieFUWBVtf&s=10",
         deskripsi: "Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.",
         pesanWa: "hallo saya mau beli Mie Gemez Enaak",
@@ -323,19 +325,45 @@ const DEFAULT_PRODUCTS = [
     }
 ];
 
-// Helper Mengambil Semua Produk dari LocalStorage
+// Helper Mengambil Semua Produk dari LocalStorage (dengan auto-sync versi data)
 function ambilSemuaProduk() {
     try {
+        const currentVersion = localStorage.getItem(DATA_VERSION_KEY);
         const simpanan = localStorage.getItem(STORAGE_KEY_PRODUK);
-        if (!simpanan) {
-            localStorage.setItem(STORAGE_KEY_PRODUK, JSON.stringify(DEFAULT_PRODUCTS));
-            return [...DEFAULT_PRODUCTS];
+
+        // Jika versi data belum sinkron atau belum ada data, perbarui dengan data default terbaru
+        if (currentVersion !== CURRENT_DATA_VERSION || !simpanan) {
+            let listGabungan = [...DEFAULT_PRODUCTS];
+
+            // Jika ada data lama, cek apakah ada produk custom baru buatan admin (id berawalan 'prod_')
+            const dataLamaRaw = simpanan || localStorage.getItem("lumiere_products_data_v1");
+            if (dataLamaRaw) {
+                try {
+                    const parsedLama = JSON.parse(dataLamaRaw);
+                    if (Array.isArray(parsedLama)) {
+                        const customItems = parsedLama.filter(p => p && p.id && p.id.startsWith("prod_"));
+                        if (customItems.length > 0) {
+                            listGabungan = [...customItems, ...DEFAULT_PRODUCTS];
+                        }
+                    }
+                } catch (err) {
+                    console.warn("Gagal parse data produk lama:", err);
+                }
+            }
+
+            localStorage.setItem(STORAGE_KEY_PRODUK, JSON.stringify(listGabungan));
+            localStorage.setItem(DATA_VERSION_KEY, CURRENT_DATA_VERSION);
+            localStorage.removeItem("lumiere_products_data_v1");
+            return listGabungan;
         }
+
         const parsed = JSON.parse(simpanan);
         if (Array.isArray(parsed) && parsed.length > 0) {
             return parsed;
         }
+
         localStorage.setItem(STORAGE_KEY_PRODUK, JSON.stringify(DEFAULT_PRODUCTS));
+        localStorage.setItem(DATA_VERSION_KEY, CURRENT_DATA_VERSION);
         return [...DEFAULT_PRODUCTS];
     } catch (e) {
         console.error("Gagal memuat produk dari LocalStorage:", e);
@@ -439,6 +467,7 @@ function hapusProduk(id) {
 // RESET: Mengembalikan ke Data Awal
 function resetProdukKeDefault() {
     localStorage.setItem(STORAGE_KEY_PRODUK, JSON.stringify(DEFAULT_PRODUCTS));
+    localStorage.setItem(DATA_VERSION_KEY, CURRENT_DATA_VERSION);
     return [...DEFAULT_PRODUCTS];
 }
 
