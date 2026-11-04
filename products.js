@@ -14,7 +14,7 @@ const DEFAULT_PRODUCTS = [
         nama: "small Happy tos merah",
         kategori: "salty",
         tipe: "snack",
-        harga: 4000,
+        harga: 5000,
         gambar: "https://down-id.img.susercontent.com/file/id-11134207-7rash-m2coh9auqkwe27",
         deskripsi: "Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.",
         pesanWa: "hallo saya mau beli happy tos merah",
@@ -22,10 +22,10 @@ const DEFAULT_PRODUCTS = [
     },
     {
         id: "snack-salty-2",
-        nama: "Kusuka Orignal 180g",
+        nama: "Kusuka Seaweed 60g",
         kategori: "salty",
         tipe: "snack",
-        harga: 10000,
+        harga: 98000,
         gambar: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//96/MTA-3971283/kusuka_kusuka_original_keripik_singkong_-180_g-_full01_sc3kbkw5.jpg",
         deskripsi: "Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.",
         pesanWa: "hallo saya mau beli Kusuka Orignal 180g",
@@ -33,10 +33,10 @@ const DEFAULT_PRODUCTS = [
     },
     {
         id: "snack-salty-3",
-        nama: "Kusuka Barbeque 180g",
+        nama: "Kusuka Barbeque 60g",
         kategori: "salty",
         tipe: "snack",
-        harga: 10000,
+        harga: 98000,
         gambar: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//105/MTA-16554975/kusuka_kusuka_barbeque_keripik_singkong_-180_g-_official_store_full01_l7pnuu6y.jpg",
         deskripsi: "Kalau mau beli produk ini, beli di toko Shopee Lumière Bites.",
         pesanWa: "hallo saya mau beli Kusuka Barbeque 180g",
@@ -44,7 +44,7 @@ const DEFAULT_PRODUCTS = [
     },
     {
         id: "snack-salty-4",
-        nama: "Kusuka lada hitam 180g",
+        nama: "Kusuka lada hitam 60g",
         kategori: "salty",
         tipe: "snack",
         harga: 10000,
@@ -364,10 +364,10 @@ function cariProdukById(id) {
 function tambahProduk(dataBaru) {
     const list = ambilSemuaProduk();
     const idBaru = "prod_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
-    
+
     // Tentukan tipe otomatis jika belum diisi
     const tipe = dataBaru.tipe || (dataBaru.kategori === 'drink' ? 'drink' : 'snack');
-    
+
     const produk = {
         id: idBaru,
         nama: (dataBaru.nama || "Produk Baru").trim(),
@@ -416,7 +416,7 @@ function hapusProduk(id) {
     const list = ambilSemuaProduk();
     const produkDihapus = list.find(item => item.id === id);
     const listBaru = list.filter(item => item.id !== id);
-    
+
     simpanSemuaProduk(listBaru);
 
     // Bersihkan juga dari keranjang belanja jika produk ini ada di keranjang
@@ -469,7 +469,7 @@ function generateCardCustomerHTML(item) {
     const encodedWa = encodeURIComponent(item.pesanWa || `hallo saya mau beli ${item.nama}`);
     const noWa = typeof NOMOR_WA !== "undefined" ? NOMOR_WA : NOMOR_WA_DEFAULT;
     const fallbackImg = "./photo/Biru Krem Modern Kedai Dimsum Logo (1).png";
-    
+
     return `
         <div class="card m-3" style="width: 18rem;" data-id="${item.id}">
             <img src="${item.gambar || fallbackImg}" 
