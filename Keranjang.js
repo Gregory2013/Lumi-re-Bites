@@ -53,6 +53,13 @@ function pasangTombolDiKartu() {
         const nama = judul.textContent.trim();
         const harga = ambilHarga(tombolHarga.textContent);
 
+        // Memungkinkan tombol harga juga bisa diklik untuk menambah ke keranjang
+        tombolHarga.style.cursor = "pointer";
+        tombolHarga.setAttribute("data-aksi", "tambah");
+        tombolHarga.setAttribute("data-nama", nama);
+        tombolHarga.setAttribute("data-harga", harga);
+        tombolHarga.setAttribute("title", "Klik untuk menambah ke keranjang");
+
         isi.insertAdjacentHTML("beforeend", `
             <div class="d-flex align-items-center gap-2 mt-2">
                 <button class="btn btn-outline-primary" type="button" data-aksi="kurang" data-nama="${nama}">-</button>
@@ -63,17 +70,30 @@ function pasangTombolDiKartu() {
     }
 
     document.addEventListener("click", function (event) {
-        const tombol = event.target.closest("button");
-        if (!tombol || !tombol.dataset.aksi) {
+        const tombol = event.target.closest("[data-aksi]");
+        if (tombol && tombol.dataset.aksi) {
+            const nama = tombol.dataset.nama;
+            if (tombol.dataset.aksi === "tambah") {
+                tambahKeKeranjang(nama, Number(tombol.dataset.harga));
+            }
+            if (tombol.dataset.aksi === "kurang") {
+                ubahJumlah(nama, -1);
+            }
             return;
         }
 
-        const nama = tombol.dataset.nama;
-        if (tombol.dataset.aksi === "tambah") {
-            tambahKeKeranjang(nama, Number(tombol.dataset.harga));
-        }
-        if (tombol.dataset.aksi === "kurang") {
-            ubahJumlah(nama, -1);
+        // Tracking jika ada yang klik tombol WhatsApp langsung pada kartu produk
+        const tombolWa = event.target.closest("a.btn-success");
+        if (tombolWa && tombolWa.href && tombolWa.href.includes("wa.me")) {
+            const kartu = tombolWa.closest(".card");
+            const namaProduk = kartu && kartu.querySelector(".card-title") ? kartu.querySelector(".card-title").textContent.trim() : "";
+            try {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: "klik_whatsapp_produk",
+                    nama_produk: namaProduk
+                });
+            } catch (e) {}
         }
     });
 }
@@ -93,6 +113,49 @@ function tambahKeKeranjang(nama, harga) {
 
     simpanKeranjang();
     tampilKeranjang();
+
+    // ========================================================
+    // Tracking Google Tag Manager / Google Analytics (add_to_cart)
+    // ========================================================
+    try {
+        window.dataLayer = window.dataLayer || [];
+
+        // 1. Event standar eCommerce GA4 (add_to_cart)
+        window.dataLayer.push({
+            event: "add_to_cart",
+            ecommerce: {
+                currency: "IDR",
+                value: harga,
+                items: [{
+                    item_name: nama,
+                    price: harga,
+                    quantity: 1
+                }]
+            }
+        });
+
+        // 2. Custom Event GTM khusus (klik_tambah_keranjang) agar mudah diset di GTM
+        window.dataLayer.push({
+            event: "klik_tambah_keranjang",
+            nama_produk: nama,
+            harga_produk: harga
+        });
+
+        // 3. Panggil langsung window.gtag jika tersedia
+        if (typeof window.gtag === "function") {
+            window.gtag("event", "add_to_cart", {
+                currency: "IDR",
+                value: harga,
+                items: [{
+                    item_name: nama,
+                    price: harga,
+                    quantity: 1
+                }]
+            });
+        }
+    } catch (err) {
+        console.warn("GTM Track Error:", err);
+    }
 }
 
 function ubahJumlah(nama, perubahan) {
@@ -192,6 +255,43 @@ function pasangKotakKeranjang() {
         if (keranjang.length === 0) {
             event.preventDefault();
             alert("Keranjang masih kosong");
+            return;
+        }
+
+        // Tracking Google Tag Manager: Checkout / Pesan WhatsApp
+        try {
+            window.dataLayer = window.dataLayer || [];
+            const totalNilai = keranjang.reduce((sum, item) => sum + (item.harga * item.jumlah), 0);
+            window.dataLayer.push({
+                event: "begin_checkout",
+                ecommerce: {
+                    currency: "IDR",
+                    value: totalNilai,
+                    items: keranjang.map(item => ({
+                        item_name: item.nama,
+                        price: item.harga,
+                        quantity: item.jumlah
+                    }))
+                }
+            });
+            window.dataLayer.push({
+                event: "klik_pesan_whatsapp",
+                total_nilai: totalNilai,
+                jumlah_item: keranjang.length
+            });
+            if (typeof window.gtag === "function") {
+                window.gtag("event", "begin_checkout", {
+                    currency: "IDR",
+                    value: totalNilai,
+                    items: keranjang.map(item => ({
+                        item_name: item.nama,
+                        price: item.harga,
+                        quantity: item.jumlah
+                    }))
+                });
+            }
+        } catch (e) {
+            console.warn("GTM Track Checkout Error:", e);
         }
     });
 

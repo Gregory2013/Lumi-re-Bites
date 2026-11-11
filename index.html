@@ -7,7 +7,7 @@
     <title>Lumière Bites</title>
 
     <!-- Google Analytics / Google Tag Manager -->
-    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-NX4VN57K"></script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-MH5LLH6H"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -127,6 +127,18 @@
         tampil_header('home')
         tampil_footer()
         mulaiKeranjang()
+
+        // Tracking klik tombol Shopee
+        const shopeeBtn = document.querySelector('.shopee-btn');
+        if (shopeeBtn) {
+            shopeeBtn.addEventListener('click', () => {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'klik_beli_shopee',
+                    link_url: shopeeBtn.href
+                });
+            });
+        }
     </script>
 
 
