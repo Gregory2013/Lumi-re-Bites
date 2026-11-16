@@ -4,3 +4,4 @@ Allow: /
 Disallow: /admin.html
 
 Sitemap: https://gregory2013.github.io/Lumi-re-Bites/sitemap.xml
+
