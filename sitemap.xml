@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    <!-- Halaman Utama (Home) -->
+    <url>
+        <loc>https://gregory2013.github.io/Lumi-re-Bites/</loc>
+        <lastmod>2026-11-16</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+        <image:image>
+            <image:loc>https://gregory2013.github.io/Lumi-re-Bites/photo/Lumi%C3%A8reBites.png</image:loc>
+            <image:title>Lumière Bites Home Banner</image:title>
+        </image:image>
+    </url>
+
+    <!-- Menu Snack -->
+    <url>
+        <loc>https://gregory2013.github.io/Lumi-re-Bites/Snack.html</loc>
+        <lastmod>2026-11-16</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://gregory2013.github.io/Lumi-re-Bites/photo/Bane-snack.png</image:loc>
+            <image:title>Lumière Bites Menu Snack</image:title>
+        </image:image>
+    </url>
+
+    <!-- Menu Minuman -->
+    <url>
+        <loc>https://gregory2013.github.io/Lumi-re-Bites/Drink.html</loc>
+        <lastmod>2026-11-16</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://gregory2013.github.io/Lumi-re-Bites/photo/Lumi%C3%A8reBites%20(1).png</image:loc>
+            <image:title>Lumière Bites Menu Minuman</image:title>
+        </image:image>
+    </url>
+</urlset>
